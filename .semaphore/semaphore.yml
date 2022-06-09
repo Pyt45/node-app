@@ -27,5 +27,6 @@ blocks:
       jobs:
         - name: push image
           commands:
+            - docker build -t node-app .
             - 'docker tag node-app:latest "${DOCKER_USERNAME}"/node-app:latest'
             - 'docker push "${DOCKER_USERNAME}"/node-app:latest'
