@@ -40,3 +40,10 @@ blocks:
             - docker build -t node-app .
             - 'docker tag node-app:latest "${DOCKER_USERNAME}"/node-app:latest'
             - 'docker push "${DOCKER_USERNAME}"/node-app:latest'
+  - name: Just another test
+    task:
+      jobs:
+        - name: print to terminal
+          commands:
+            - checkout
+            - echo "Hello from this pipeline"
