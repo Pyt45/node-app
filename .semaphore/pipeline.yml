@@ -1,0 +1,21 @@
+version: "1.0"
+name: Build and push
+agent:
+  machine: e1-standard-2
+  os_image: ubuntu1804
+blocks:
+  - name: Build and push
+    task:
+      secrets:
+        - name: dockerhub
+      prologue:
+        commands:
+          # Authenticate to the registry for all jobs in the block
+          - echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+      jobs:
+        - name: Build and push
+          commands:
+            - checkout
+            - docker build -t node-app .
+            - docker tag node-app:latest "${DOCKER_USERNAME}"/node-app:latest
+            - docker push "${DOCKER_USERNAME}"/node-app:latest
