@@ -8,7 +8,7 @@ blocks:
   - name: Initial Pipeline
     task:
       jobs:
-        - name: Build
+        - name: build image
           commands:
             - checkout
             - docker build -t node-app .
@@ -17,6 +17,15 @@ blocks:
       prologue:
         commands:
           - 'echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin'
+  - name: Test
+    task:
+      jobs:
+        - name: test image
+          commands:
+            - checkout
+            - docker build -t node-app .
+            - 'docker run -d -p 8080:8080 node-app'
+            - 'curl localhost:8080'
   - name: Push
     task:
       secrets:
